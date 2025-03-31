@@ -16,7 +16,7 @@ export default defineConfig({
   // テスト開始前にローカル開発サーバーを実行
   webServer: {
     command: 'npm run start',
-    url: 'http://localhost:3000',
+    url: 'http://localhost:9999',
     reuseExistingServer: !process.env.CI,
     stdout: 'ignore',
     stderr: 'pipe',
@@ -49,7 +49,7 @@ export default defineConfig({
   // テスト開始前にローカル開発サーバーを実行
   webServer: {
     command: 'npm run start',
-    url: 'http://localhost:3000',
+    url: 'http://localhost:9999',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000, // 120秒
   },
@@ -60,7 +60,7 @@ export default defineConfig({
 
 設定の`use: {}`セクションで`baseURL`を指定することもお勧めします。これにより、テストで相対URLを使用でき、完全なURLを何度も指定する必要がなくなります。
 
-[page.goto()](/docs/api/class-page#page-goto)、[page.route()](/docs/api/class-page#page-route)、[page.waitForURL()](/docs/api/class-page#page-wait-for-url)、[page.waitForRequest()](/docs/api/class-page#page-wait-for-request)、または[page.waitForResponse()](/docs/api/class-page#page-wait-for-response)を使用する場合、[`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL)コンストラクタを使用して対応するURLを構築することでベースURLを考慮します。例えば、baseURLを`http://localhost:3000`に設定し、テストで`/login`に移動すると、Playwrightは`http://localhost:3000/login`を使用してテストを実行します。
+[page.goto()](/docs/api/class-page#page-goto)、[page.route()](/docs/api/class-page#page-route)、[page.waitForURL()](/docs/api/class-page#page-wait-for-url)、[page.waitForRequest()](/docs/api/class-page#page-wait-for-request)、または[page.waitForResponse()](/docs/api/class-page#page-wait-for-response)を使用する場合、[`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL)コンストラクタを使用して対応するURLを構築することでベースURLを考慮します。例えば、baseURLを`http://localhost:9999`に設定し、テストで`/login`に移動すると、Playwrightは`http://localhost:9999/login`を使用してテストを実行します。
 
 ```javascript
 // playwright.config.js
@@ -71,11 +71,11 @@ export default defineConfig({
   // テスト開始前にローカル開発サーバーを実行
   webServer: {
     command: 'npm run start',
-    url: 'http://localhost:3000',
+    url: 'http://localhost:9999',
     reuseExistingServer: !process.env.CI,
   },
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:9999',
   },
 });
 ```
@@ -87,7 +87,7 @@ export default defineConfig({
 import { test } from '@playwright/test';
 
 test('テスト', async ({ page }) => {
-  // これはhttp://localhost:3000/loginに移動します
+  // これはhttp://localhost:9999/loginに移動します
   await page.goto('./login');
 });
 ```
@@ -104,7 +104,7 @@ export default defineConfig({
   webServer: [
     {
       command: 'npm run start',
-      url: 'http://localhost:3000',
+      url: 'http://localhost:9999',
       timeout: 120 * 1000,
       reuseExistingServer: !process.env.CI,
     },
@@ -116,6 +116,6 @@ export default defineConfig({
     }
   ],
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:9999',
   },
 });
