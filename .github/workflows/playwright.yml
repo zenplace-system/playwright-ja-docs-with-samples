@@ -15,7 +15,9 @@ jobs:
     name: "Playwright Tests"
     runs-on: ubuntu-latest
     timeout-minutes: 30
-
+    container:
+      image: mcr.microsoft.com/playwright:v1.51.1-noble
+      
     steps:
       - uses: actions/checkout@v4
 
@@ -26,9 +28,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps
 
       - name: Run Playwright tests
         id: playwright
