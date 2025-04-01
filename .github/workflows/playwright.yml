@@ -37,7 +37,7 @@ jobs:
       - name: Run Playwright tests
         id: playwright
         run: |
-          npx playwright test src/app/login/login.spec.ts --project=chromium
+          npx playwright test src/app/login/login.spec.ts --project=chromium-headless
           echo "status=$?" >> $GITHUB_OUTPUT
           echo "date=$(date)" >> $GITHUB_OUTPUT
         env:
