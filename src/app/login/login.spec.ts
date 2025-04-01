@@ -62,6 +62,14 @@ test.describe("ログイン機能のテスト", () => {
     await expect(page).toHaveURL("/phoenix", { timeout: 5000 });
   });
 
+  test.skip("実際のAPIを使用したログイン成功テスト", async ({ page }) => {
+    await page.fill('input[name="login_id"]', "10004");
+    await page.fill('input[name="password"]', "00000");
+    await page.click('button[type="submit"]');
+
+    await expect(page).toHaveURL("/phoenix");
+  });
+
   test("APIリクエストをモックして失敗時の動作をテスト", async ({ page }) => {
     await page.route(
       "http://127.0.0.1:8001/employee-auth/v1/auth/login",
