@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('test', async ({ page }) => {
-  await page.goto('http://localhost:3001/');
+  await page.goto('http://localhost:9999/');
   await page.getByRole('link', { name: 'テストの書き方を詳しく学ぶ' }).click();
   await page.getByRole('link', { name: 'テスト自動生成を学ぶ' }).click();
   await page.getByRole('link', { name: 'ホームに戻る' }).click();

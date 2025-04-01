@@ -143,7 +143,7 @@ To avoid running `beforeEach` hooks, you can put annotations in the hook itself.
 
 example.spec.ts
 
-    test.beforeEach(async ({ page, isMobile }) => {  test.fixme(isMobile, 'Settings page does not work in mobile yet');  await page.goto('http://localhost:3000/settings');});test('user profile', async ({ page }) => {  await page.getByText('My Profile').click();  // ...});
+    test.beforeEach(async ({ page, isMobile }) => {  test.fixme(isMobile, 'Settings page does not work in mobile yet');  await page.goto('http://localhost:9999/settings');});test('user profile', async ({ page }) => {  await page.getByText('My Profile').click();  // ...});
 
 Runtime annotations[​](#runtime-annotations "Direct link to Runtime annotations")
 ---------------------------------------------------------------------------------

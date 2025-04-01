@@ -106,7 +106,7 @@ Specify `globalSetup`, `baseURL` and `storageState` in the configuration file.
 
 playwright.config.ts
 
-    import { defineConfig } from '@playwright/test';export default defineConfig({  globalSetup: require.resolve('./global-setup'),  use: {    baseURL: 'http://localhost:3000/',    storageState: 'state.json',  },});
+    import { defineConfig } from '@playwright/test';export default defineConfig({  globalSetup: require.resolve('./global-setup'),  use: {    baseURL: 'http://localhost:9999/',    storageState: 'state.json',  },});
 
 Tests start already authenticated because we specify `storageState` that was populated by global setup.
 

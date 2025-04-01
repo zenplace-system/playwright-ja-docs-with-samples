@@ -33,7 +33,7 @@ export default defineConfig({
   
   use: {
     // `await page.goto('/')`のようなアクションで使用するベースURL。
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:9999',
     
     // 失敗したテストを再試行するときにトレースを収集します。
     trace: 'on-first-retry',
@@ -50,7 +50,7 @@ export default defineConfig({
   // テストを開始する前にローカル開発サーバーを実行します。
   webServer: {
     command: 'npm run start',
-    url: 'http://localhost:3000',
+    url: 'http://localhost:9999',
     reuseExistingServer: !process.env.CI,
   },
 });

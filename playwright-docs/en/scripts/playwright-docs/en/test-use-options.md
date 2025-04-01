@@ -26,7 +26,7 @@ Set the base URL and storage state for all tests:
 
 playwright.config.ts
 
-    import { defineConfig } from '@playwright/test';export default defineConfig({  use: {    // Base URL to use in actions like `await page.goto('/')`.    baseURL: 'http://localhost:3000',    // Populates context with given storage state.    storageState: 'state.json',  },});
+    import { defineConfig } from '@playwright/test';export default defineConfig({  use: {    // Base URL to use in actions like `await page.goto('/')`.    baseURL: 'http://localhost:9999',    // Populates context with given storage state.    storageState: 'state.json',  },});
 
 Option
 

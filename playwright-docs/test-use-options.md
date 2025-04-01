@@ -15,7 +15,7 @@ import { defineConfig } from '@playwright/test';
 export default defineConfig({
   use: {
     // `await page.goto('/')`のようなアクションで使用するベースURL
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:9999',
     // コンテキストに指定したストレージ状態を設定
     storageState: 'state.json',
   },

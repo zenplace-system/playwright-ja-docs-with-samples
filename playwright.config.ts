@@ -8,7 +8,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: 'http://localhost:3001',
+    baseURL: 'http://localhost:9999',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
@@ -62,8 +62,7 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: 'bun run dev',
-    port: 3001,
+    command: 'bun run dev --port 9999',
     reuseExistingServer: true,
   },
 });
