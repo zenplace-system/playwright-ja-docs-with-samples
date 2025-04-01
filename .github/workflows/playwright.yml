@@ -1,0 +1,84 @@
+name: Playwright テスト
+
+on:
+  pull_request:
+    branches: [main, master, develop]
+  # 手動実行用のトリガー
+  workflow_dispatch:
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Bunのセットアップ
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: 依存関係のインストール
+        run: bun install
+
+      - name: Playwright ブラウザのインストール
+        run: bunx playwright install --with-deps
+
+      - name: Playwright テストの実行
+        run: bun run test
+        env:
+          # テストに必要な環境変数があれば追加
+          NODE_ENV: test
+
+      # テストが失敗してもレポートをアップロード (テストがキャンセルされた場合は除く)
+      - name: HTMLレポートをアーティファクトとしてアップロード
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ github.run_id }}
+          path: playwright-report/
+          retention-days: 30
+          
+      # プライベートリポジトリの場合、アーティファクトはリポジトリにアクセスできるユーザーのみが閲覧可能です
+      # テスト結果と詳細情報をコメントとして追加
+      - name: テスト結果をPRコメントとして追加
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            try {
+              // テスト結果のサマリーを読み込む（ファイルパスは実際の出力に合わせて調整してください）
+              let summary = '';
+              if (fs.existsSync('./playwright-report/results.json')) {
+                const results = JSON.parse(fs.readFileSync('./playwright-report/results.json', 'utf8'));
+                
+                // 簡単なサマリーを作成
+                const total = results.stats?.total || 0;
+                const passed = results.stats?.passed || 0;
+                const failed = results.stats?.failed || 0;
+                const skipped = results.stats?.skipped || 0;
+                
+                summary = `### Playwright テスト結果
+                - 合計テスト数: ${total}
+                - 成功: ${passed}
+                - 失敗: ${failed}
+                - スキップ: ${skipped}
+                
+                テスト詳細は GitHub Actions の "Artifacts" セクションからダウンロードできます。
+                `;
+              } else {
+                summary = '### Playwright テスト完了\nテスト詳細は GitHub Actions の "Artifacts" セクションからダウンロードできます。';
+              }
+              
+              // PRへコメントを追加
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: summary
+              });
+            } catch (error) {
+              console.error('Error creating PR comment:', error);
+            }
