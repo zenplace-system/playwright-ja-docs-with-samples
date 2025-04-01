@@ -40,7 +40,7 @@ export default function LoginForm() {
       } else if (error) {
         setError("ログインに失敗しました。ログイン情報が間違っています。");
       }
-    } catch (error) {
+    } catch (_error) {
       setError("サーバーとの通信に失敗しました。");
     }
   };
