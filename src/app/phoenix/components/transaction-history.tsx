@@ -1,5 +1,5 @@
 import React from 'react';
-import { MoreHorizontal, ChevronDown, Check, Clock, AlertCircle } from 'lucide-react';
+import { MoreHorizontal, ChevronDown } from 'lucide-react';
 
 type Transaction = {
   id: number;

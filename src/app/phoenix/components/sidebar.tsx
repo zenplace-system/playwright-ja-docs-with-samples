@@ -10,7 +10,6 @@ import {
   Settings, 
   HelpCircle, 
   Moon, 
-  Sun, 
   LogOut 
 } from 'lucide-react';
 

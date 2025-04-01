@@ -28,23 +28,20 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # アプリケーションサーバーを起動
       - name: Build and start the application
         run: |
           npm run build
           npm run start & 
-          # バックグラウンドで起動し、次のステップに進む
-          sleep 10 # アプリケーションの起動を待つ
+          sleep 10
 
       - name: Run Playwright tests
         id: playwright
         run: |
-          npx playwright test src/app/login/login.spec.ts
+          npx playwright test src/app/login/login.spec.ts --project=chromium
           echo "status=$?" >> $GITHUB_OUTPUT
           echo "date=$(date)" >> $GITHUB_OUTPUT
         env:
           CI: true
-          # テスト用の環境変数を設定
           PLAYWRIGHT_TEST_BASE_URL: http://localhost:3000
 
       - name: Upload test results
