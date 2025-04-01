@@ -5,6 +5,11 @@ on:
     branches: [master, develop]
   workflow_dispatch: # 手動実行用
 
+# 権限設定を追加
+permissions:
+  contents: read
+  pull-requests: write # PRへのコメント追加に必要
+
 jobs:
   test:
     name: "Playwright Tests"
