@@ -3,6 +3,8 @@ import { test, expect } from "@playwright/test";
 test.describe("ログイン機能のテスト", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/login");
+
+    await page.waitForLoadState("networkidle");
   });
 
   test("ログインページが正しく表示される", async ({ page }) => {
@@ -37,6 +39,9 @@ test.describe("ログイン機能のテスト", () => {
     await page.route(
       "http://127.0.0.1:8001/employee-auth/v1/auth/login",
       async (route) => {
+        const postData = route.request().postData();
+        console.log("Request data:", postData);
+
         await route.fulfill({
           status: 200,
           contentType: "application/json",
@@ -53,7 +58,7 @@ test.describe("ログイン機能のテスト", () => {
     await page.fill('input[name="login_id"]', "testuser");
     await page.fill('input[name="password"]', "password123");
 
-    await page.locator('button[type="submit"]').click({ force: true });
+    await page.locator('button[type="submit"]').click();
 
     const dialog = await dialogPromise;
     expect(dialog.message()).toContain("ログインに成功しました");
@@ -90,7 +95,7 @@ test.describe("ログイン機能のテスト", () => {
     await page.fill('input[name="login_id"]', "wronguser");
     await page.fill('input[name="password"]', "wrongpass");
 
-    await page.locator('button[type="submit"]').click({ force: true });
+    await page.locator('button[type="submit"]').click();
 
     await expect(page.locator("text=ログインに失敗しました")).toBeVisible({
       timeout: 5000,
@@ -110,7 +115,7 @@ test.describe("ログイン機能のテスト", () => {
     await page.fill('input[name="login_id"]', "testuser");
     await page.fill('input[name="password"]', "password123");
 
-    await page.locator('button[type="submit"]').click({ force: true });
+    await page.locator('button[type="submit"]').click();
 
     await expect(
       page.locator("text=サーバーとの通信に失敗しました")
