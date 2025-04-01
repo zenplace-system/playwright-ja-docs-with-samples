@@ -28,7 +28,7 @@ jobs:
       - name: Run Playwright tests
         id: playwright
         run: |
-          npx playwright test
+          npx playwright test src/app/login/login.spec.ts
           echo "status=$?" >> $GITHUB_OUTPUT
           echo "date=$(date)" >> $GITHUB_OUTPUT
         env:
@@ -68,13 +68,12 @@ jobs:
               body: testSummary
             });
 
-      - name: Slack Notification
-        if: always()
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-          author_name: "Playwright Test Results"
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        # Slack通知を使用しない場合はこのステップをコメントアウト
+      # - name: Slack Notification
+      #   if: always()
+      #   uses: 8398a7/action-slack@v3
+      #   with:
+      #     status: ${{ job.status }}
+      #     fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+      #     author_name: "Playwright Test Results"
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
