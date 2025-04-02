@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -27,10 +27,14 @@ export default function LoginForm() {
       formData.append("login_id", loginId);
       formData.append("password", password);
 
-      // サーバーアクションを呼び出し
       const result = await loginAction(formData);
 
       if (result.success) {
+        if (result.token) {
+          localStorage.setItem("access_token", result.token.access_token);
+          localStorage.setItem("refresh_token", result.token.refresh_token);
+        }
+
         alert("ログインに成功しました。");
         router.push("/phoenix");
       } else if (result.error) {
