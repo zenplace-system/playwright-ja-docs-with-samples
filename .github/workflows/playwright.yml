@@ -43,6 +43,7 @@ jobs:
         env:
           CI: true
           PLAYWRIGHT_TEST_BASE_URL: http://localhost:9999
+          HOME: /root
 
       - name: Upload test results
         if: always()
