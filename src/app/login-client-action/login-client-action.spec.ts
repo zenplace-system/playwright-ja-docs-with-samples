@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("ログイン機能のテスト", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/login");
+    await page.goto("/login-client-action");
 
     await page.waitForLoadState("networkidle");
   });
@@ -101,7 +101,7 @@ test.describe("ログイン機能のテスト", () => {
       timeout: 5000,
     });
 
-    await expect(page).toHaveURL("/login");
+    await expect(page).toHaveURL("/login-client-action");
   });
 
   test("ネットワークエラー時の動作をテスト", async ({ page }) => {
@@ -121,6 +121,6 @@ test.describe("ログイン機能のテスト", () => {
       page.locator("text=サーバーとの通信に失敗しました")
     ).toBeVisible({ timeout: 5000 });
 
-    await expect(page).toHaveURL("/login");
+    await expect(page).toHaveURL("/login-client-action");
   });
 });
