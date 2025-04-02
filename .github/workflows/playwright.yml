@@ -37,7 +37,7 @@ jobs:
       - name: Run E2E tests
         id: playwright
         run: |
-          npx playwright test src/app/login/login.spec.ts --project=firefox-headless
+          npx playwright test src/app/login/login.spec.ts src/app/login-server-action/login-server-action.spec.ts --project=firefox-headless
           echo "status=$?" >> $GITHUB_OUTPUT
           echo "date=$(date)" >> $GITHUB_OUTPUT
         env:
