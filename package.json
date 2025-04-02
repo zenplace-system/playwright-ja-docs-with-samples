@@ -10,6 +10,9 @@
     "test": "playwright test",
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
+    "test:chrome-headless": "playwright test --project=chromium-headless",
+    "test:firefox-headless": "playwright test --project=firefox-headless",
+    "test:webkit-headless": "playwright test --project=webkit-headless",
     "test:chrome": "playwright test --project=chromium",
     "test:firefox": "playwright test --project=firefox",
     "test:webkit": "playwright test --project=webkit"

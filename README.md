@@ -89,4 +89,7 @@ act
 このコマンドはworkflow_dispatchイベントをトリガーとして、testジョブを実行します。
 ```bash
 act -j test workflow_dispatch
+
+# MAC Appleシリコンは amd64アーキテクチャで動作する
+act -j test workflow_dispatch --container-architecture linux/amd64
 ```
