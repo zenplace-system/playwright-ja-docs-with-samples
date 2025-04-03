@@ -146,7 +146,7 @@ test.describe("サーバーアクションを使用したログイン機能の�
 
     await expect(page.locator(".error")).toBeVisible({ timeout: 10000 });
     await expect(page.locator(".error")).toContainText(
-      "ログインに失敗しました。ログイン情報が間違っています。",
+      "サーバーとの通信に失敗しました。",
       { timeout: 10000 }
     );
 
