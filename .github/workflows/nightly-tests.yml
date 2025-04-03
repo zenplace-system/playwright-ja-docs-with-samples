@@ -27,6 +27,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install required tools
+        run: apt-get update && apt-get install -y unzip
+
       - name: Install Bun
         uses: oven-sh/setup-bun@v1
         with:
