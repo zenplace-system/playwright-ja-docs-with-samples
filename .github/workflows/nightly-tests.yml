@@ -44,7 +44,7 @@ jobs:
         id: playwright
         run: |
           # すべてのテストを実行
-          npx playwright test --project=webkit-headless
+          npx playwright test --project=webkit-headless --workers=2
         env:
           CI: true
           PLAYWRIGHT_TEST_BASE_URL: http://localhost:9999

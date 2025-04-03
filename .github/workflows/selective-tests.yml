@@ -112,10 +112,10 @@ jobs:
         run: |
           if [ "${{ needs.determine-tests.outputs.run_all }}" == "true" ]; then
             echo "すべてのテストを実行します"
-            npx playwright test --project=webkit-headless
+            npx playwright test --project=webkit-headless --workers=2
           else
             echo "選択されたテストを実行します: ${{ needs.determine-tests.outputs.test_files }}"
-            npx playwright test ${{ needs.determine-tests.outputs.test_files }} --project=webkit-headless
+            npx playwright test ${{ needs.determine-tests.outputs.test_files }} --project=webkit-headless --workers=2
           fi
           echo "status=$?" >> $GITHUB_OUTPUT
           echo "date=$(date)" >> $GITHUB_OUTPUT
