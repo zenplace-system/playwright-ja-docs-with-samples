@@ -1,0 +1,159 @@
+name: 選択的テスト実行
+
+on:
+  pull_request:
+    branches: [master, develop]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  determine-tests:
+    name: "テスト対象の決定"
+    runs-on: ubuntu-latest
+    outputs:
+      test_files: ${{ steps.filter.outputs.test_files }}
+      run_all: ${{ steps.filter.outputs.run_all }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v39
+
+      - name: テスト対象の決定
+        id: filter
+        run: |
+          # 変更されたファイルを取得
+          CHANGED_FILES="${{ steps.changed-files.outputs.all_changed_files }}"
+          echo "変更されたファイル: $CHANGED_FILES"
+
+          # テスト対象を決定するロジック
+          TEST_FILES=""
+          RUN_ALL="false"
+
+          # 設定ファイルが変更された場合は全テスト実行
+          if echo "$CHANGED_FILES" | grep -q "playwright.config.ts\|package.json\|tsconfig.json"; then
+            echo "設定ファイルが変更されたため、全テストを実行します"
+            RUN_ALL="true"
+          fi
+
+          # src/app/login-client-action/ 内のファイルが変更された場合
+          if echo "$CHANGED_FILES" | grep -q "src/app/login-client-action/"; then
+            TEST_FILES="$TEST_FILES src/app/login-client-action/login-client-action.spec.ts"
+          fi
+
+          # src/app/login-server-action/ 内のファイルが変更された場合
+          if echo "$CHANGED_FILES" | grep -q "src/app/login-server-action/"; then
+            TEST_FILES="$TEST_FILES src/app/login-server-action/login-server-action.spec.ts"
+          fi
+
+          # src/app/phoenix/ 内のファイルが変更された場合
+          if echo "$CHANGED_FILES" | grep -q "src/app/phoenix/"; then
+            # phoenixに関連するテストを追加
+            TEST_FILES="$TEST_FILES src/app/login-client-action/login-client-action.spec.ts src/app/login-server-action/login-server-action.spec.ts"
+          fi
+
+          # 共通コンポーネントが変更された場合は全テスト実行
+          if echo "$CHANGED_FILES" | grep -q "src/components/"; then
+            echo "共通コンポーネントが変更されたため、全テストを実行します"
+            RUN_ALL="true"
+          fi
+
+          # .github/workflows/ 内のファイルが変更された場合は全テスト実行しない
+          if [ "$RUN_ALL" = "false" ] && [ -z "$TEST_FILES" ] && echo "$CHANGED_FILES" | grep -q ".github/workflows/"; then
+            echo "ワークフローファイルのみの変更のため、テストをスキップします"
+            TEST_FILES=""
+          # 変更がない場合や特定できない場合は基本的なテストのみ実行
+          elif [ "$RUN_ALL" = "false" ] && [ -z "$TEST_FILES" ]; then
+            echo "特定のテスト対象が見つからないため、基本テストを実行します"
+            TEST_FILES="src/app/login-client-action/login-client-action.spec.ts"
+          fi
+
+          echo "test_files=$TEST_FILES" >> $GITHUB_OUTPUT
+          echo "run_all=$RUN_ALL" >> $GITHUB_OUTPUT
+
+  run-tests:
+    name: "テスト実行"
+    needs: determine-tests
+    if: needs.determine-tests.outputs.test_files != '' || needs.determine-tests.outputs.run_all == 'true'
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.51.1-noble
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install wait-on
+        run: npm install -g wait-on
+
+      - name: Build and start application
+        run: |
+          npm run build
+          npm run start -- -p 9999 &
+          echo "アプリケーションの起動を待機中..."
+          sleep 60
+          npx wait-on http://localhost:9999 -t 60000
+
+      - name: Run selected tests
+        id: playwright
+        run: |
+          if [ "${{ needs.determine-tests.outputs.run_all }}" == "true" ]; then
+            echo "すべてのテストを実行します"
+            npx playwright test --project=webkit-headless
+          else
+            echo "選択されたテストを実行します: ${{ needs.determine-tests.outputs.test_files }}"
+            npx playwright test ${{ needs.determine-tests.outputs.test_files }} --project=webkit-headless
+          fi
+          echo "status=$?" >> $GITHUB_OUTPUT
+          echo "date=$(date)" >> $GITHUB_OUTPUT
+        env:
+          CI: true
+          PLAYWRIGHT_TEST_BASE_URL: http://localhost:9999
+          HOME: /root
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
+      - name: コメント追加
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const testResult = ${{ steps.playwright.outputs.status }} === '0' ? '✅ 成功' : '❌ 失敗';
+            const testFiles = `${{ needs.determine-tests.outputs.test_files }}`.trim();
+            const runAll = ${{ needs.determine-tests.outputs.run_all }};
+
+            let testScope = '';
+            if (runAll) {
+              testScope = 'すべてのテスト';
+            } else if (testFiles) {
+              testScope = `選択されたテスト: ${testFiles}`;
+            } else {
+              testScope = 'テストなし';
+            }
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## テスト結果: ${testResult}\n\n**実行範囲**: ${testScope}\n\n詳細はワークフローの実行結果を確認してください。`
+            });
