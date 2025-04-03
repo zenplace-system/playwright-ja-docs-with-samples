@@ -3,7 +3,7 @@ name: E2E Tests
 on:
   pull_request:
     branches: [master, develop, develop-action-test]
-  workflow_dispatch: # 手動実行用
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -91,13 +91,3 @@ jobs:
               repo: context.repo.repo,
               body: testSummary
             });
-
-      # - name: Slack Notification
-      #   if: always()
-      #   uses: 8398a7/action-slack@v3
-      #   with:
-      #     status: ${{ job.status }}
-      #     fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-      #     author_name: "Playwright Test Results"
-      #   env:
-      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
