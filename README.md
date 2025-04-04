@@ -39,16 +39,57 @@ cd playwright-docs
 
 ## 開発環境のセットアップ
 
-Playwrightをインストールするには：
+Playwrightをインストールするには、以下のコマンドを実行してください：
 
 ```bash
-# npmの場合
-npm init playwright@latest
-
 # bunの場合
-bun create playwright
+bun install
+bunx playwright install --with-deps
+bun run test
 ```
 
-## 貢献について
+## Github Actionsによるテスト自動化、レポートについて
 
-誤訳や改善点があれば、Issues または Pull Requestsでお知らせください。
+GitHub Actionsの設定ファイルを`.github/workflows/playwright.yml`として用意しました。
+
+### 主なテスト実行仕様
+
+- **実行条件**:
+	- **自動実行**: main, master, developブランチへのPR作成時のみ
+	- **手動実行**: `workflow_dispatch`トリガーを追加
+	- 手動実行の使用方法
+		リポジトリのGitHub Actionsタブから「Playwright テスト」ワークフローを選択し、「Run workflow」ボタンをクリックすることで、いつでも手動でテストを実行できます。このボタンは通常、ブランチを選択できるドロップダウンと一緒に表示されます。
+- **環境設定**:
+    - Bunを使用した依存関係のインストール
+    - Playwrightブラウザの自動インストール
+- **テストレポートの共有**:
+    - テスト結果をGitHub Artifactsとして保存（リポジトリ権限ベースのアクセス制限付き）
+    - 実行IDを含むユニークな名前でレポートを保存
+    - PRの場合、テスト結果の概要をPRコメントに自動追加
+
+### アクセス制限について
+
+この設定では、テストレポートへのアクセスはリポジトリへの権限を持つユーザーのみに制限されます：
+
+- GitHub Artifactsはリポジトリ権限に基づいてアクセス制御されます
+- プライベートリポジトリの場合、アクセス権を持つメンバーのみがレポートを閲覧可能
+
+### 使用方法
+テスト実行後は、GitHub Actionsの実行結果ページから「Artifacts」セクションにてテストレポートをダウンロードできます。
+
+## Github Actionのlocalでの動作確認
+
+`brew install act`で`act`をインストールして、localで動作確認できます。
+
+```bash
+act -v
+```
+act 
+
+このコマンドはworkflow_dispatchイベントをトリガーとして、testジョブを実行します。
+```bash
+act -j test workflow_dispatch
+
+# MAC Appleシリコンは amd64アーキテクチャで動作する
+act -j test workflow_dispatch --container-architecture linux/amd64
+```

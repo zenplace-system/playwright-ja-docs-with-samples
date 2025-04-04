@@ -133,16 +133,16 @@ Next to the name of each test in the sidebar you will find an eye icon. Clicking
 Docker & GitHub Codespaces[​](#docker--github-codespaces "Direct link to Docker & GitHub Codespaces")
 -----------------------------------------------------------------------------------------------------
 
-For Docker and GitHub Codespaces environments, you can run UI mode in the browser. In order for an endpoint to be accessible outside of the container, it needs to be bound to the `0.0.0.0` interface:
+For Docker and GitHub Codespaces environments, you can run UI mode in the browser. In order for an endpoint to be accessible outside of the container, it needs to be bound to the `localhost` interface:
 
-    npx playwright test --ui-host=0.0.0.0
+    npx playwright test --ui-host=localhost
 
 In the case of GitHub Codespaces, the port gets [forwarded automatically](https://docs.github.com/en/codespaces/developing-in-codespaces/forwarding-ports-in-your-codespace#about-forwarded-ports), so you can open UI mode in the browser by clicking on the link in the terminal.
 
 To have a static port, you can pass the `--ui-port` flag:
 
-    npx playwright test --ui-port=8080 --ui-host=0.0.0.0
+    npx playwright test --ui-port=8080 --ui-host=localhost
 
 note
 
-Be aware that when specifying the `--ui-host=0.0.0.0` flag, UI Mode with your traces, the passwords and secrets is accessible from other machines inside your network. In the case of GitHub Codespaces, the ports are only accessible from your account by default.
+Be aware that when specifying the `--ui-host=localhost` flag, UI Mode with your traces, the passwords and secrets is accessible from other machines inside your network. In the case of GitHub Codespaces, the ports are only accessible from your account by default.

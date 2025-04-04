@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 // テストの作成ページのテスト
 test('テストの作成ページの表示テスト', async ({ page }) => {
   // テストの作成ページにアクセス
-  await page.goto('http://localhost:9999/writing-tests');
+  await page.goto('http://localhost:4000/writing-tests');
   
   // タイトルの確認
   await expect(page).toHaveTitle('Playwright 学習ガイド');

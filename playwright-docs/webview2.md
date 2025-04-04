@@ -76,7 +76,7 @@ export const test = base.extend({
         resolve();
     }));
 
-    const browser = await playwright.chromium.connectOverCDP(`http://127.0.0.1:${cdpPort}`);
+    const browser = await playwright.chromium.connectOverCDP(`http://localhost:${cdpPort}`);
     await use(browser);
     await browser.close();
     childProcess.execSync(`taskkill /pid ${webView2Process.pid} /T /F`);

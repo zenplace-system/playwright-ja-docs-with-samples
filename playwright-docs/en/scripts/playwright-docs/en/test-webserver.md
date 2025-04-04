@@ -27,7 +27,7 @@ Use the `webserver` property in your Playwright config to launch a development w
 
 playwright.config.ts
 
-    import { defineConfig } from '@playwright/test';export default defineConfig({  // Run your local dev server before starting the tests  webServer: {    command: 'npm run start',    url: 'http://localhost:9999',    reuseExistingServer: !process.env.CI,    stdout: 'ignore',    stderr: 'pipe',  },});
+    import { defineConfig } from '@playwright/test';export default defineConfig({  // Run your local dev server before starting the tests  webServer: {    command: 'npm run start',    url: 'http://localhost:4000',    reuseExistingServer: !process.env.CI,    stdout: 'ignore',    stderr: 'pipe',  },});
 
 Property
 
@@ -80,24 +80,24 @@ Webservers can sometimes take longer to boot up. In this case, you can increase 
 
 playwright.config.ts
 
-    import { defineConfig } from '@playwright/test';export default defineConfig({  // Rest of your config...  // Run your local dev server before starting the tests  webServer: {    command: 'npm run start',    url: 'http://localhost:9999',    reuseExistingServer: !process.env.CI,    timeout: 120 * 1000,  },});
+    import { defineConfig } from '@playwright/test';export default defineConfig({  // Rest of your config...  // Run your local dev server before starting the tests  webServer: {    command: 'npm run start',    url: 'http://localhost:4000',    reuseExistingServer: !process.env.CI,    timeout: 120 * 1000,  },});
 
 Adding a baseURL[​](#adding-a-baseurl "Direct link to Adding a baseURL")
 ------------------------------------------------------------------------
 
 It is also recommended to specify the `baseURL` in the `use: {}` section of your config, so that tests can use relative urls and you don't have to specify the full URL over and over again.
 
-When using [page.goto()](/docs/api/class-page#page-goto), [page.route()](/docs/api/class-page#page-route), [page.waitForURL()](/docs/api/class-page#page-wait-for-url), [page.waitForRequest()](/docs/api/class-page#page-wait-for-request), or [page.waitForResponse()](/docs/api/class-page#page-wait-for-response) it takes the base URL in consideration by using the [`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor for building the corresponding URL. For Example, by setting the baseURL to `http://localhost:9999` and navigating to `/login` in your tests, Playwright will run the test using `http://localhost:9999/login`.
+When using [page.goto()](/docs/api/class-page#page-goto), [page.route()](/docs/api/class-page#page-route), [page.waitForURL()](/docs/api/class-page#page-wait-for-url), [page.waitForRequest()](/docs/api/class-page#page-wait-for-request), or [page.waitForResponse()](/docs/api/class-page#page-wait-for-response) it takes the base URL in consideration by using the [`URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor for building the corresponding URL. For Example, by setting the baseURL to `http://localhost:4000` and navigating to `/login` in your tests, Playwright will run the test using `http://localhost:4000/login`.
 
 playwright.config.ts
 
-    import { defineConfig } from '@playwright/test';export default defineConfig({  // Rest of your config...  // Run your local dev server before starting the tests  webServer: {    command: 'npm run start',    url: 'http://localhost:9999',    reuseExistingServer: !process.env.CI,  },  use: {    baseURL: 'http://localhost:9999',  },});
+    import { defineConfig } from '@playwright/test';export default defineConfig({  // Rest of your config...  // Run your local dev server before starting the tests  webServer: {    command: 'npm run start',    url: 'http://localhost:4000',    reuseExistingServer: !process.env.CI,  },  use: {    baseURL: 'http://localhost:4000',  },});
 
 Now you can use a relative path when navigating the page:
 
 test.spec.ts
 
-    import { test } from '@playwright/test';test('test', async ({ page }) => {  // This will navigate to http://localhost:9999/login  await page.goto('./login');});
+    import { test } from '@playwright/test';test('test', async ({ page }) => {  // This will navigate to http://localhost:4000/login  await page.goto('./login');});
 
 Multiple web servers[​](#multiple-web-servers "Direct link to Multiple web servers")
 ------------------------------------------------------------------------------------
@@ -106,4 +106,4 @@ Multiple web servers (or background processes) can be launched simultaneously by
 
 playwright.config.ts
 
-    import { defineConfig } from '@playwright/test';export default defineConfig({  webServer: [    {      command: 'npm run start',      url: 'http://localhost:9999',      timeout: 120 * 1000,      reuseExistingServer: !process.env.CI,    },    {      command: 'npm run backend',      url: 'http://localhost:3333',      timeout: 120 * 1000,      reuseExistingServer: !process.env.CI,    }  ],  use: {    baseURL: 'http://localhost:9999',  },});
+    import { defineConfig } from '@playwright/test';export default defineConfig({  webServer: [    {      command: 'npm run start',      url: 'http://localhost:4000',      timeout: 120 * 1000,      reuseExistingServer: !process.env.CI,    },    {      command: 'npm run backend',      url: 'http://localhost:3333',      timeout: 120 * 1000,      reuseExistingServer: !process.env.CI,    }  ],  use: {    baseURL: 'http://localhost:4000',  },});

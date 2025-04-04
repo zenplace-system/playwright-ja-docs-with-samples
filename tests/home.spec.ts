@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 // トップページのテスト
 test('トップページの表示テスト', async ({ page }) => {
   // トップページにアクセス
-  await page.goto('http://localhost:9999/');
+  await page.goto('http://localhost:4000/');
   
   // タイトルの確認
   await expect(page).toHaveTitle('Playwright 学習ガイド');

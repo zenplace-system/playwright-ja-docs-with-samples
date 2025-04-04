@@ -41,7 +41,7 @@ Playwright comes with multiple built-in locators. To make tests resilient, we re
 
 For example, consider the following DOM structure.
 
-http://localhost:9999
+http://localhost:4000
 
 Sign in
 
@@ -69,7 +69,7 @@ The [page.getByRole()](/docs/api/class-page#page-get-by-role) locator reflects h
 
 For example, consider the following DOM structure.
 
-http://localhost:9999
+http://localhost:4000
 
 ### Sign up
 
@@ -96,7 +96,7 @@ Most form controls usually have dedicated labels that could be conveniently used
 
 For example, consider the following DOM structure.
 
-http://localhost:9999
+http://localhost:4000
 
 Password 
 
@@ -116,7 +116,7 @@ Inputs may have a placeholder attribute to hint to the user what value should be
 
 For example, consider the following DOM structure.
 
-http://localhost:9999
+http://localhost:4000
 
     <input type="email" placeholder="name@example.com" />
 
@@ -134,7 +134,7 @@ Find an element by the text it contains. You can match by a substring, exact str
 
 For example, consider the following DOM structure.
 
-http://localhost:9999
+http://localhost:4000
 
 Welcome, John
 
@@ -168,7 +168,7 @@ All images should have an `alt` attribute that describes the image. You can loca
 
 For example, consider the following DOM structure.
 
-http://localhost:9999
+http://localhost:4000
 
 ![playwright logo](/img/playwright-logo.svg)
 
@@ -188,7 +188,7 @@ Locate an element with a matching title attribute using [page.getByTitle()](/doc
 
 For example, consider the following DOM structure.
 
-http://localhost:9999
+http://localhost:4000
 
 25 issues
 
@@ -208,7 +208,7 @@ Testing by test ids is the most resilient way of testing as even if your text or
 
 For example, consider the following DOM structure.
 
-http://localhost:9999
+http://localhost:4000
 
 Itinéraire
 
@@ -234,7 +234,7 @@ playwright.config.ts
 
 In your html you can now use `data-pw` as your test id instead of the default `data-testid`.
 
-http://localhost:9999
+http://localhost:4000
 
 Itinéraire
 
@@ -293,7 +293,7 @@ Filtering Locators[​](#filtering-locators "Direct link to Filtering Locators")
 
 Consider the following DOM structure where we want to click on the buy button of the second product card. We have a few options in order to filter the locators to get the right one.
 
-http://localhost:9999
+http://localhost:4000
 
 *   ### Product 1
     
@@ -324,7 +324,7 @@ Alternatively, filter by **not having** text:
 
 Locators support an option to only select elements that have or have not a descendant matching another locator. You can therefore filter by any other locator such as a [locator.getByRole()](/docs/api/class-locator#locator-get-by-role), [locator.getByTestId()](/docs/api/class-locator#locator-get-by-test-id), [locator.getByText()](/docs/api/class-locator#locator-get-by-text) etc.
 
-http://localhost:9999
+http://localhost:4000
 
 *   ### Product 1
     
@@ -414,7 +414,7 @@ You can assert locators in order to count the items in a list.
 
 For example, consider the following DOM structure:
 
-http://localhost:9999
+http://localhost:4000
 
 *   apple
 *   banana
@@ -432,7 +432,7 @@ You can assert locators in order to find all the text in a list.
 
 For example, consider the following DOM structure:
 
-http://localhost:9999
+http://localhost:4000
 
 *   apple
 *   banana
@@ -454,7 +454,7 @@ Use the [page.getByText()](/docs/api/class-page#page-get-by-text) method to loca
 
 For example, consider the following DOM structure:
 
-http://localhost:9999
+http://localhost:4000
 
 *   apple
 *   banana
@@ -472,7 +472,7 @@ Use the [locator.filter()](/docs/api/class-locator#locator-filter) to locate a s
 
 For example, consider the following DOM structure:
 
-http://localhost:9999
+http://localhost:4000
 
 *   apple
 *   banana
@@ -490,7 +490,7 @@ Use the [page.getByTestId()](/docs/api/class-page#page-get-by-test-id) method to
 
 For example, consider the following DOM structure:
 
-http://localhost:9999
+http://localhost:4000
 
 *   apple
 *   banana
@@ -516,7 +516,7 @@ When you have elements with various similarities, you can use the [locator.filte
 
 For example, consider the following DOM structure:
 
-http://localhost:9999
+http://localhost:4000
 
 *   John
     

@@ -202,7 +202,7 @@ test.describe('chromiumのみ', () => {
 // example.spec.js
 test.beforeEach(async ({ page, isMobile }) => {
   test.fixme(isMobile, '設定ページはまだモバイルでは動作しません');
-  await page.goto('http://localhost:9999/settings');
+  await page.goto('http://localhost:4000/settings');
 });
 
 test('ユーザープロフィール', async ({ page }) => {

@@ -74,10 +74,10 @@ DOMスナップショット上部のポップアウトアイコンをクリッ�
 
 ## DockerとGitHub Codespaces
 
-DockerとGitHub Codespacesの環境では、ブラウザでUIモードを実行できます。コンテナの外部からエンドポイントにアクセスできるようにするには、`0.0.0.0`インターフェースにバインドする必要があります：
+DockerとGitHub Codespacesの環境では、ブラウザでUIモードを実行できます。コンテナの外部からエンドポイントにアクセスできるようにするには、`localhost`インターフェースにバインドする必要があります：
 
 ```bash
-npx playwright test --ui-host=0.0.0.0
+npx playwright test --ui-host=localhost
 ```
 
 GitHub Codespacesの場合、ポートは[自動的に転送](https://docs.github.com/en/codespaces/developing-in-codespaces/forwarding-ports-in-your-codespace#about-forwarded-ports)されるため、ターミナルのリンクをクリックしてブラウザでUIモードを開くことができます。
@@ -85,7 +85,7 @@ GitHub Codespacesの場合、ポートは[自動的に転送](https://docs.githu
 静的ポートを持つには、`--ui-port`フラグを渡すことができます：
 
 ```bash
-npx playwright test --ui-port=8080 --ui-host=0.0.0.0
+npx playwright test --ui-port=8080 --ui-host=localhost
 ```
 
-> **注意**: `--ui-host=0.0.0.0`フラグを指定すると、トレース、パスワード、シークレットを含むUIモードがネットワーク内の他のマシンからアクセス可能になります。GitHub Codespacesの場合、ポートはデフォルトでアカウントからのみアクセス可能です。
+> **注意**: `--ui-host=localhost`フラグを指定すると、トレース、パスワード、シークレットを含むUIモードがネットワーク内の他のマシンからアクセス可能になります。GitHub Codespacesの場合、ポートはデフォルトでアカウントからのみアクセス可能です。
