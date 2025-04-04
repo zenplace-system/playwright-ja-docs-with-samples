@@ -62,8 +62,8 @@ jobs:
             try {
               // テスト結果のサマリーを読み込む
               let summary = '';
-              if (fs.existsSync('./test-results/results.json')) {
-                const results = JSON.parse(fs.readFileSync('./test-results/results.json', 'utf8'));
+              if (fs.existsSync('./test-results/.last-run.json')) {
+                const results = JSON.parse(fs.readFileSync('./test-results/.last-run.json', 'utf8'));
                 
                 // 簡単なサマリーを作成
                 const total = results.stats?.total || 0;
