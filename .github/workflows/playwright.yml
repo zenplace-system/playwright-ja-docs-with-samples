@@ -66,10 +66,10 @@ jobs:
                 const results = JSON.parse(fs.readFileSync('./test-results/.last-run.json', 'utf8'));
                 
                 // 簡単なサマリーを作成
-                const total = results.stats?.total || 0;
-                const passed = results.stats?.passed || 0;
-                const failed = results.stats?.failed || 0;
-                const skipped = results.stats?.skipped || 0;
+                const total = results.total || 0;
+                const passed = results.passed || 0;
+                const failed = results.failed || 0;
+                const skipped = results.skipped || 0;
                 
                 summary = `### Playwright テスト結果
                 - 合計テスト数: ${total}
