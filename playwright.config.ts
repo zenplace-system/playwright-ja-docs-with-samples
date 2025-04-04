@@ -1,5 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
+// ポート番号を定数として宣言
+const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 4000;
+
 export default defineConfig({
   // testDir: './tests',
   fullyParallel: true,
@@ -8,7 +11,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: 'http://0.0.0.0:4000',
+    baseURL: `http://localhost:${PORT}`,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
 
@@ -69,10 +72,8 @@ export default defineConfig({
   ],
 
   webServer: {
-    // TODO: PORT変数化する
-    command: 'export PORT=4000 && npm run dev -- --hostname=0.0.0.0',
-    // ここでもポート番号を指定しないと動作しない時がある様子
-    port: 4000,
+    command: `export PORT=${PORT} && npm run dev`,
+    port: PORT,
     reuseExistingServer: !process.env.CI, // CI環境では毎回新しくサーバーを起動
   },
 });
