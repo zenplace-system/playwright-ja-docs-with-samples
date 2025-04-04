@@ -11,41 +11,31 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.51.1-jammy
+      image: mcr.microsoft.com/playwright:v1.51.1-noble
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
           cache: 'npm'
-        # キャッシュパスを明示的に指定
-          cache-dependency-path: '**/package-lock.json'
+          cache-dependency-path: 'package-lock.json'
 
       - name: 依存関係のインストール
-        run: npm ci
-
-      # 環境変数を設定ファイルに書き出し
-      - name: 環境変数の設定
         run: |
-          echo "PORT=3000" > .env.local
-          echo "HOST=localhost" >> .env.local
-          echo "環境変数を設定しました:"
-          cat .env.local
-
-      - name: テスト環境の起動
-        run: |
-          # ホストを 0.0.0.0 に設定して、すべてのネットワークインターフェースでリッスン
-          # サーバーを起動し、バックグラウンドで実行
-          nohup npm run dev --hostname=0.0.0.0 > nohup.out 2>&1 &
-          echo "Webサーバーを起動しました"
-
+          npm ci
+          # GitHub Actions の Linux 環境では、Linux 用のバイナリが必要です
+          npm install @tailwindcss/oxide-linux-x64-gnu
+          npm install lightningcss-linux-x64-gnu
+          
       - name: Playwright テストの実行
         run: |
-          # テスト実行時にベースURLを明示的に指定
-          npm run test:chrome-headless -- --timeout=60000
+          # テスト実行(chrome-headlessのみ)
+          npm run test:chrome-headless
         env:
-          # テストに必要な環境変数
+          NODE_OPTIONS: "--max_old_space_size=4096"
           NODE_ENV: test
+          CI: true
+
       - name: HTMLレポートをアーティファクトとしてアップロード
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
@@ -53,6 +43,7 @@ jobs:
           name: playwright-report-${{ github.run_id }}
           path: playwright-report/
           retention-days: 30
+
       - name: テスト結果をPRコメントとして追加
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v7

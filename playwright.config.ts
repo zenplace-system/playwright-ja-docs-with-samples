@@ -8,9 +8,16 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: 'http://0.0.0.0:9999',
+    baseURL: 'http://0.0.0.0:4000',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+
+    // CI環境では追加の設定
+    ...(process.env.CI ? {
+      // CIでの安定性向上のための設定
+      viewport: { width: 1280, height: 720 },
+      ignoreHTTPSErrors: true,
+    } : {}),
   },
 
   projects: [
@@ -63,9 +70,9 @@ export default defineConfig({
 
   webServer: {
     // TODO: PORT変数化する
-    command: 'export PORT=9999 && npm run dev --hostname=0.0.0.0',
+    command: 'export PORT=4000 && npm run dev -- --hostname=0.0.0.0',
     // ここでもポート番号を指定しないと動作しない時がある様子
-    port: 9999,
-    reuseExistingServer: true,
+    port: 4000,
+    reuseExistingServer: !process.env.CI, // CI環境では毎回新しくサーバーを起動
   },
 });

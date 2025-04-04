@@ -915,7 +915,7 @@ Version 1.34[​](#version-134 "Direct link to Version 1.34")
     
     playwright.config.ts
     
-        import { defineConfig } from '@playwright/test';export default defineConfig({  // Run your local dev server before starting the tests  webServer: {    command: 'npm run start',    url: 'http://localhost:9999',    reuseExistingServer: !process.env.CI,    stdout: 'pipe',    stderr: 'pipe',  },});
+        import { defineConfig } from '@playwright/test';export default defineConfig({  // Run your local dev server before starting the tests  webServer: {    command: 'npm run start',    url: 'http://localhost:4000',    reuseExistingServer: !process.env.CI,    stdout: 'pipe',    stderr: 'pipe',  },});
     
 *   New [locator.and()](/docs/api/class-locator#locator-and) to create a locator that matches both locators.
     
@@ -1327,7 +1327,7 @@ Launch multiple web servers, databases, or other processes by passing an array o
 
 playwright.config.ts
 
-    import { defineConfig } from '@playwright/test';export default defineConfig({  webServer: [    {      command: 'npm run start',      url: 'http://localhost:9999',      timeout: 120 * 1000,      reuseExistingServer: !process.env.CI,    },    {      command: 'npm run backend',      url: 'http://localhost:3333',      timeout: 120 * 1000,      reuseExistingServer: !process.env.CI,    }  ],  use: {    baseURL: 'http://localhost:9999/',  },});
+    import { defineConfig } from '@playwright/test';export default defineConfig({  webServer: [    {      command: 'npm run start',      url: 'http://localhost:4000',      timeout: 120 * 1000,      reuseExistingServer: !process.env.CI,    },    {      command: 'npm run backend',      url: 'http://localhost:3333',      timeout: 120 * 1000,      reuseExistingServer: !process.env.CI,    }  ],  use: {    baseURL: 'http://localhost:4000/',  },});
 
 ### 🐂 Debian 11 Bullseye Support[​](#-debian-11-bullseye-support "Direct link to 🐂 Debian 11 Bullseye Support")
 
@@ -1982,7 +1982,7 @@ To launch a server during the tests, use the [`webServer`](/docs/test-webserver)
 
 playwright.config.ts
 
-    import { defineConfig } from '@playwright/test';export default defineConfig({  webServer: {    command: 'npm run start', // command to launch    url: 'http://localhost:9999', // url to await for    timeout: 120 * 1000,    reuseExistingServer: !process.env.CI,  },});
+    import { defineConfig } from '@playwright/test';export default defineConfig({  webServer: {    command: 'npm run start', // command to launch    url: 'http://localhost:4000', // url to await for    timeout: 120 * 1000,    reuseExistingServer: !process.env.CI,  },});
 
 Learn more in the [documentation](/docs/test-webserver).
 
