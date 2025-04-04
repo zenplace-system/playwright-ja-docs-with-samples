@@ -22,22 +22,25 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
-          cache: 'npm'
-          cache-dependency-path: 'package-lock.json'
+
+      - name: Bunのインストール
+        run: |
+          # Bunのインストール
+          npm install -g bun
 
       - name: 依存関係のインストール
         run: |
-          npm ci
+          bun install --frozen-lockfile
           # GitHub Actions の Linux 環境では、Linux 用のバイナリが必要です
-          npm install @tailwindcss/oxide-linux-x64-gnu
-          npm install lightningcss-linux-x64-gnu
+          bun install @tailwindcss/oxide-linux-x64-gnu
+          bun install lightningcss-linux-x64-gnu
           
       - name: Playwright テストの実行
         run: |
           # テスト実行(chrome-headlessのみ)
-          npm run test:chrome-headless
+          bun run test:chrome-headless
         env:
-          NODE_OPTIONS: "--max_old_space_size=4096"
+          NODE_OPTIONS: "--max_old_space_size=4096" # メモリ不足でCSSのビルドが失敗する不具合対策
           NODE_ENV: test
           CI: true
 
@@ -59,8 +62,8 @@ jobs:
             try {
               // テスト結果のサマリーを読み込む
               let summary = '';
-              if (fs.existsSync('./playwright-report/results.json')) {
-                const results = JSON.parse(fs.readFileSync('./playwright-report/results.json', 'utf8'));
+              if (fs.existsSync('./test-results/results.json')) {
+                const results = JSON.parse(fs.readFileSync('./test-results/results.json', 'utf8'));
                 
                 // 簡単なサマリーを作成
                 const total = results.stats?.total || 0;

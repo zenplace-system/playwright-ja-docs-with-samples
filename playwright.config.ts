@@ -72,7 +72,7 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: `export PORT=${PORT} && npm run dev`,
+    command: `export PORT=${PORT} && bun run dev`,
     port: PORT,
     reuseExistingServer: !process.env.CI, // CI環境では毎回新しくサーバーを起動
   },
