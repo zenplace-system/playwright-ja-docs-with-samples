@@ -183,7 +183,7 @@ import { defineConfig } from '@playwright/test';
 export default defineConfig({
   globalSetup: require.resolve('./global-setup'),
   use: {
-    baseURL: 'http://localhost:9999/',
+    baseURL: 'http://localhost:4000/',
     storageState: 'state.json',
   },
 });

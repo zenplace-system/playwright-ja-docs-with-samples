@@ -1,16 +1,26 @@
 import { defineConfig, devices } from '@playwright/test';
 
+// ポート番号を定数として宣言
+const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 4000;
+
 export default defineConfig({
-  testDir: './tests',
+  // testDir: './tests',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: 'http://localhost:9999',
+    baseURL: `http://localhost:${PORT}`,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+
+    // CI環境では追加の設定
+    ...(process.env.CI ? {
+      // CIでの安定性向上のための設定
+      viewport: { width: 1280, height: 720 },
+      ignoreHTTPSErrors: true,
+    } : {}),
   },
 
   projects: [
@@ -62,7 +72,8 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: 'bun run dev --port 9999',
-    reuseExistingServer: true,
+    command: `export PORT=${PORT} && bun run dev`,
+    port: PORT,
+    reuseExistingServer: !process.env.CI, // CI環境では毎回新しくサーバーを起動
   },
 });
