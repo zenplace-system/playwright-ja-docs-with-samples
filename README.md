@@ -2,6 +2,9 @@
 
 このリポジトリは、[Playwright](https://playwright.dev)の公式ドキュメントを日本語に翻訳し、JavaScript開発者向けに最適化したものです。
 
+このリポジトリ内に基本的な学習ステップ・実践的なテスト開発・テスト設定と効率化・CI/CD統合・高度なテスト技法
+- https://github.com/zenplace-system/playwright-ja-docs-with-samples/blob/main/playwright-docs/index.md
+
 ## 概要
 
 - **目的**: Playwright初心者が素早く理解できる日本語リソースの提供
@@ -93,3 +96,5 @@ act -j test workflow_dispatch
 # MAC Appleシリコンは amd64アーキテクチャで動作する
 act -j test workflow_dispatch --container-architecture linux/amd64
 ```
+# Vercel公開済み
+- https://shadcn-next15-guide-docs-sample.vercel.app
