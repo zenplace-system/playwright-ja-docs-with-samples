@@ -21,6 +21,9 @@ export default function Page() {
           <Button variant="outline" asChild>
             <Link href="/generating-tests">テスト自動生成を試す</Link>
           </Button>
+          <Button variant="outline" asChild>
+            <Link href="/generating-tests">test</Link>
+          </Button>
         </div>
       </section>
 
